@@ -2,12 +2,16 @@
 #include <cstdlib>
 using namespace std;
 
+// Templating with recursive pointers is much harder than simply changing the
+// typedef, and makes the code much less readable
+typedef double data_type;
+
 struct tree_node
 {
     tree_node * lo;
     tree_node * hi;
     tree_node * parent;
-    double data;
+    data_type data;
 };
 
 class BinarySearchTree
@@ -15,10 +19,10 @@ class BinarySearchTree
     private:
         tree_node * root;
         int tsize (tree_node * node);
-        double tmin (tree_node * node);
-        double tmax (tree_node * node);
+        data_type tmin (tree_node * node);
+        data_type tmax (tree_node * node);
         void clear_node (tree_node * node);
-        tree_node * removeNode (tree_node * node, double value);
+        tree_node * removeNode (tree_node * node, data_type value);
 
     public:
         BinarySearchTree ()
@@ -29,14 +33,14 @@ class BinarySearchTree
         {
             treeClear ();
         }
-        void insert (double);
-        void remove (double value);
+        void insert (data_type);
+        void remove (data_type value);
         int treeSize ();
-        double treeMin ();
-        double treeMax ();
+        data_type treeMin ();
+        data_type treeMax ();
 
         tree_node * getRoot ();
-        tree_node * getNode (tree_node * node, double value);
+        tree_node * getNode (tree_node * node, data_type value);
         tree_node * treeMinTree ();
         tree_node * treeMaxTree ();
         tree_node * tminTree (tree_node * node);
@@ -48,7 +52,7 @@ class BinarySearchTree
         void treeClear ();
 };
 
-void BinarySearchTree::insert (double d)
+void BinarySearchTree::insert (data_type d)
 {
     tree_node * t = new tree_node;
     tree_node * parent;
@@ -80,13 +84,13 @@ void BinarySearchTree::insert (double d)
     }
 }
 
-void BinarySearchTree::remove (double value)
+void BinarySearchTree::remove (data_type value)
 {
     root = removeNode (root, value);
 }
 
 // recursive private member function:
-tree_node * BinarySearchTree::removeNode (tree_node * node, double value)
+tree_node * BinarySearchTree::removeNode (tree_node * node, data_type value)
 {
     if (node == nullptr)
         return node;
@@ -135,12 +139,12 @@ int BinarySearchTree::tsize (tree_node * node)
         return tsize (node->lo) + 1 + tsize (node->hi);
 }
 
-double BinarySearchTree::treeMin ()
+data_type BinarySearchTree::treeMin ()
 {
     return tmin (root);
 }
 
-double BinarySearchTree::tmin (tree_node * node)
+data_type BinarySearchTree::tmin (tree_node * node)
 {
     while (node->lo != nullptr)
         node = node->lo;
@@ -148,12 +152,12 @@ double BinarySearchTree::tmin (tree_node * node)
     return node->data;
 }
 
-double BinarySearchTree::treeMax ()
+data_type BinarySearchTree::treeMax ()
 {
     return tmax (root);
 }
 
-double BinarySearchTree::tmax (tree_node * node)
+data_type BinarySearchTree::tmax (tree_node * node)
 {
     while (node->hi != nullptr)
         node = node->hi;
@@ -208,7 +212,7 @@ tree_node * BinarySearchTree::getRoot ()
     return node;
 }
 
-tree_node * BinarySearchTree::getNode (tree_node * node, double value)
+tree_node * BinarySearchTree::getNode (tree_node * node, data_type value)
 {
     if (node == nullptr)
     {
