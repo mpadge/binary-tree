@@ -26,3 +26,24 @@ memory leaks](http://valgrind.org/docs/manual/mc-manual.html) can be run with
 `make val`, demonstrating that all pointers are successfully deleted, and there
 are no memory leaks. This is also run for the [`travis-ci` checks for this
 repo](https://travis-ci.org/mpadge/binary-tree).
+
+## How does it work?
+
+Simply bundle the `bst.h` file into your code, then construct a tree with
+```
+BinarySearchTree b;
+for (size_t i = 0; i < n; i++)
+    b.insert (value [i]);
+```
+The usual functions exist, `b.treeSize()`, `b.TreeMin()`, `b.treeMax()`, and
+`b.remove()`. Tracing sequential values first requires extracting a pointer to
+the root of the tree, re-directing that pointer to one of the extrema, and then
+iterating it. The following code demonstrates
+```
+tree_node * node = b.getRoot();
+node = b.getNode (node, b.treeMin()); // now points to min node
+double value = node->data; // the min value
+node = b.nextHi (node);
+value = node->data // the next minimal node
+```
+A `nextLo` function can be used to iterate along decreasing values.

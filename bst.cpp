@@ -29,6 +29,8 @@ int main ()
     std::vector <double> d (n);
     for (size_t i = 0; i < n; i++)
         d [i] = distribution (generator);
+    // This code works even with very mal-formed trees constructed from sorted
+    // data:
     //std::sort (d.begin (), d.end ());
     mktree (b, d);
 
