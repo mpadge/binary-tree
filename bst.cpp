@@ -25,7 +25,7 @@ int main ()
     std::default_random_engine generator;
     std::uniform_real_distribution<double> distribution (0.0,1.0);
 
-    unsigned int n = 100;
+    unsigned int n = 1000;
     std::vector <double> d (n);
     for (size_t i = 0; i < n; i++)
         d [i] = distribution (generator);
@@ -52,7 +52,7 @@ int main ()
     tn = b.getNode (tn, tmin);
     std::cout << "sequence from lowest value:" << std::endl <<
         tn->data << std::endl;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 9; i++)
     {
         tn = b.nextHi (tn);
         std::cout << tn->data << std::endl;
@@ -63,7 +63,7 @@ int main ()
     tn = b.getNode (tn, tmax);
     std::cout << "sequence from highest value:" << std::endl <<
         tn->data << std::endl;
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 9; i++)
     {
         tn = b.nextLo (tn);
         std::cout << tn->data << std::endl;

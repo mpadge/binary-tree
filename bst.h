@@ -17,8 +17,9 @@ class BinarySearchTree
         int tsize (tree_node * node);
         double tmin (tree_node * node);
         double tmax (tree_node * node);
-        void tmin_p (tree_node * node);
         void clear_node (tree_node * node);
+        tree_node * removeNode (tree_node * node, double value);
+
     public:
         BinarySearchTree ()
         {
@@ -29,7 +30,7 @@ class BinarySearchTree
             treeClear ();
         }
         void insert (double);
-        void remove (double);
+        void remove (double value);
         int treeSize ();
         double treeMin ();
         double treeMax ();
@@ -55,7 +56,7 @@ void BinarySearchTree::insert (double d)
     t->lo = nullptr;
     t->hi = nullptr;
     parent = nullptr;
-    // is this a new tree?
+
     if (root == nullptr)
         root = t;
     else
@@ -79,115 +80,46 @@ void BinarySearchTree::insert (double d)
     }
 }
 
-void BinarySearchTree::remove (double d)
+void BinarySearchTree::remove (double value)
 {
-    if (root == nullptr)
-        return;
+    root = removeNode (root, value);
+}
 
-    tree_node * node = getNode (root, d);
-    tree_node * parent;
-    if (node->parent != nullptr)
-        parent = node->parent;
+// recursive private member function:
+tree_node * BinarySearchTree::removeNode (tree_node * node, double value)
+{
+    if (node == nullptr)
+        return node;
 
-    // node has no children
-    if ( node->lo == nullptr && node->hi == nullptr)
-    {
-        if (parent->lo == node)
-            parent->lo = nullptr;
-        else
-            parent->hi = nullptr;
-        delete node;
-        return;
+    if (value < node->data) {
+        node->lo = removeNode (node->lo, value);
+    } else if (value > node->data) {
+        node->hi = removeNode (node->hi, value);
+    } else {
+        if (node->lo == nullptr && node->hi == nullptr) { // no children
+            delete node;
+            node = nullptr;
+        }
+        else if (node->lo == nullptr) { // 1 child: hi
+            tree_node * temp = node;
+            node->hi->parent = node->parent;
+            node = node->hi;
+            delete temp;
+        }
+        else if (node->hi == nullptr) { // 1 childe: lo
+            tree_node * temp = node;
+            node->lo->parent = node->parent;
+            node = node->lo;
+            delete temp;
+        }
+        else // 2 children
+        {
+            tree_node * temp = tminTree (node->hi);
+            node->data = temp->data;
+            node->hi = removeNode (node->hi, temp->data);
+        }
     }
-
-    // Node has single child
-    if ((node->lo == nullptr && node->hi != nullptr) ||
-            (node->lo != nullptr && node->hi == nullptr))
-    {
-        if (node->lo == nullptr && node->hi != nullptr)
-        {
-            if (parent->lo == node)
-            {
-                parent->lo = node->hi;
-                parent->lo->parent = parent;
-                std::cout << "(" << parent->lo->data << ")" << std::endl;
-                delete node;
-            }
-            else
-            {
-                std::cout << "***a2***" << parent->data << std::endl;
-                if (node->hi == nullptr)
-                    std::cout << "NULL hi" << std::endl;
-                if (node->lo == nullptr)
-                    std::cout << "NULL lo" << std::endl;
-                parent->hi = node->hi;
-                std::cout << "---[" << parent->hi->data << "]---" << std::endl;
-                parent->hi->parent = parent;
-                std::cout << "---[" << parent->hi->parent->data << "]---" << std::endl;
-                delete node;
-            }
-        }
-        else
-        {
-            if (parent->lo == node)
-            {
-                std::cout << "***a3***" << std::endl;
-                parent->lo = node->lo;
-                parent->lo->parent = parent;
-                delete node;
-            }
-            else
-            {
-                std::cout << "***a4***" << std::endl;
-                parent->hi = node->lo;
-                parent->hi->parent = parent;
-                delete node;
-            }
-        }
-        return;
-    }
-
-
-    // Node has 2 children; replace with smallest value in hi subtree
-    if (node->lo != nullptr && node->hi != nullptr)
-    {
-        std::cout << "***A***" << std::endl;
-        tree_node * subtree;
-        subtree = node->hi;
-        if (subtree->lo == nullptr && subtree->hi == nullptr)
-        {
-            node = subtree;
-            delete subtree;
-            node->hi = nullptr;
-        }
-        else // hi child has children
-        {
-            if ((node->hi)->lo != nullptr)
-            {
-                tree_node * lnode = node->hi->lo;
-                tree_node * lparent = node->hi;
-                while (lnode->lo != nullptr)
-                {
-                    lparent = lnode;
-                    lnode = lnode->lo;
-                }
-                node->data = lnode->data;
-                lnode->hi->parent = node;
-                delete lnode;
-            }
-            else
-            {
-                tree_node * temp = node->hi;
-                node->data = temp->data;
-                node->hi = temp->hi;
-                node->parent = temp->parent;
-                delete temp;
-            }
-
-        }
-        return;
-    }
-
+    return node; // then the root node which needs to be updated
 }
 
 int BinarySearchTree::treeSize ()
@@ -201,12 +133,6 @@ int BinarySearchTree::tsize (tree_node * node)
         return 0;
     else
         return tsize (node->lo) + 1 + tsize (node->hi);
-}
-
-void BinarySearchTree::tmin_p (tree_node * node)
-{
-    while (node->lo)
-        node = node->lo;
 }
 
 double BinarySearchTree::treeMin ()
