@@ -46,4 +46,8 @@ double value = node->data; // the min value
 node = b.nextHi (node);
 value = node->data // the next minimal node
 ```
-A `nextLo` function can be used to iterate along decreasing values.
+A `nextLo` function can be used to iterate along decreasing values. Checkout
+[`bst.cpp`](https://github.com/mpadge/binary-tree/blob/master/bst.cpp) for more
+detailed examples, along with the corresponding output shown on the [`travis`
+build](https://travis-ci.org/mpadge/binary-tree).
+
