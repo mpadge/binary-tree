@@ -142,7 +142,7 @@ double BinarySearchTree::treeMin ()
 
 double BinarySearchTree::tmin (tree_node * node)
 {
-    while (node->lo)
+    while (node->lo != nullptr)
         node = node->lo;
 
     return node->data;
@@ -155,7 +155,7 @@ double BinarySearchTree::treeMax ()
 
 double BinarySearchTree::tmax (tree_node * node)
 {
-    while (node->hi)
+    while (node->hi != nullptr)
         node = node->hi;
 
     return node->data;
@@ -168,7 +168,7 @@ tree_node * BinarySearchTree::treeMinTree ()
 
 tree_node * BinarySearchTree::tminTree (tree_node * node)
 {
-    while (node->lo)
+    while (node->lo != nullptr)
         node = node->lo;
 
     return node;
@@ -181,7 +181,7 @@ tree_node * BinarySearchTree::treeMaxTree ()
 
 tree_node * BinarySearchTree::tmaxTree (tree_node * node)
 {
-    while (node->hi)
+    while (node->hi != nullptr)
         node = node->hi;
 
     return node;
@@ -210,6 +210,13 @@ tree_node * BinarySearchTree::getRoot ()
 
 tree_node * BinarySearchTree::getNode (tree_node * node, double value)
 {
+    if (node == nullptr)
+    {
+        std::cout << "value = " << value <<
+            " does not exist in the tree" << std::endl;
+        return node;
+    }
+
 	if (value < node->data) 
 		return getNode (node->lo, value);
 	else if (value > node->data)
