@@ -1,6 +1,10 @@
 language: cpp
 compiler: clang
 
+before_install:
+    - sudo apt-get update
+    - sudo apt-get install valgrind
+
 script:
     - make
     - make val
