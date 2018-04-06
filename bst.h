@@ -236,6 +236,8 @@ tree_node * BinarySearchTree::nextHi (tree_node * node)
         node = y;
         y = y->parent;
     }
+    if (y == nullptr)
+        std::cout << "already at max value" << std::endl;
     return y;
 }
 
@@ -250,5 +252,7 @@ tree_node * BinarySearchTree::nextLo (tree_node * node)
         node = y;
         y = y->parent;
     }
+    if (y == nullptr)
+        std::cout << "already at min value" << std::endl;
     return y;
 }
