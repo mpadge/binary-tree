@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mpadge/binary-tree.svg)](https://travis-ci.org/mpadge/binary-tree) 
+
 # get nth element of binary search tree 
 
 Extraction of extrema (min/max) from binary search trees is easy. Efficient
