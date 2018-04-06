@@ -16,6 +16,7 @@ tmux new-window -t $SESSION:2 -n bst-make
 tmux select-window -t $SESSION:2
 tmux send-keys -t $SESSION:2 'vim tmux-start.bash' C-m
 tmux send-keys -t $SESSION:2 ':' 'tabe makefile' C-m
+tmux send-keys -t $SESSION:2 ':' 'tabe .travis.yml' C-m
 tmux send-keys -t $SESSION:2 ':' 'tabe README.md' C-m
 tmux split-window -h
 tmux send-keys -t $SESSION:2 'git status' C-m
